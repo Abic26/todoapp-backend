@@ -11,6 +11,12 @@
       "maxDuration": 30
     }
   },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/travel-report",
