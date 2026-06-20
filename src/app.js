@@ -7,6 +7,7 @@ const swaggerDocument = require('./config/swagger');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const twilioRoutes = require('./routes/twilioRoutes');
+const reminderRoutes = require('./routes/reminderRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
@@ -37,6 +38,7 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/twilio', twilioRoutes);
+app.use('/api/cron', reminderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

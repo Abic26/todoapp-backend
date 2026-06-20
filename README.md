@@ -269,3 +269,34 @@ Las fechas se reciben y retornan en ISO 8601.
   métricas, copias de seguridad y pruebas automatizadas antes de publicar.
 - Configura la URL pública del webhook en Twilio y verifica que el número de WhatsApp esté
   aprobado para producción.
+
+## Despliegue en Vercel
+
+El proyecto incluye `vercel.json` y el adaptador serverless `api/index.js`.
+
+1. Importa el repositorio en Vercel.
+2. En **Settings → Environment Variables**, configura como mínimo:
+
+   ```text
+   NODE_ENV=production
+   DATABASE_URL=<connection string pooler de Neon>
+   DB_SSL=true
+   DB_SYNC=false
+   JWT_SECRET=<secreto largo y aleatorio>
+   CRON_SECRET=<secreto aleatorio de al menos 16 caracteres>
+   CORS_ORIGIN=<origen permitido>
+   ```
+
+3. Añade también las variables de Twilio si usarás WhatsApp.
+4. Despliega sin configurar un Build Command personalizado.
+
+Todas las rutas se redirigen a la función Express. El cron de Vercel llama cada cinco
+minutos a `GET /api/cron/reminders` y se autentica automáticamente mediante
+`CRON_SECRET`. La frecuencia disponible puede depender del plan de Vercel.
+
+No subas `.env`: Vercel debe recibir las variables desde su panel. Antes del primer
+despliegue de producción, crea las tablas mediante migraciones o ejecuta temporalmente
+la sincronización en un entorno controlado.
+
+
+creado y desarrollado por AbicDev

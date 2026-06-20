@@ -307,6 +307,27 @@ const swaggerDocument = {
         },
       },
     },
+    '/api/cron/reminders': {
+      get: {
+        tags: ['System'],
+        summary: 'Procesar recordatorios pendientes desde Vercel Cron',
+        description:
+          'Endpoint interno. Vercel envía automáticamente CRON_SECRET como token Bearer.',
+        security: [{ cronAuth: [] }],
+        responses: {
+          200: successResponse('Recordatorios procesados', {
+            type: 'object',
+            properties: {
+              skipped: { type: 'boolean' },
+              processed: { type: 'integer' },
+              sent: { type: 'integer' },
+              failed: { type: 'integer' },
+            },
+          }),
+          401: errorResponses[401],
+        },
+      },
+    },
   },
   components: {
     securitySchemes: {
@@ -314,6 +335,11 @@ const swaggerDocument = {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
+      },
+      cronAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        description: 'Valor configurado en CRON_SECRET.',
       },
     },
     parameters: {

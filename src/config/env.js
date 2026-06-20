@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const toBoolean = (value, fallback = false) => {
   if (value === undefined) return fallback;
@@ -92,6 +93,7 @@ module.exports = {
     secret: process.env.JWT_SECRET || 'development-only-secret-change-me',
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
+  cronSecret: cleanValue(process.env.CRON_SECRET),
   twilio: {
     accountSid: process.env.TWILIO_ACCOUNT_SID || '',
     authToken: process.env.TWILIO_AUTH_TOKEN || '',

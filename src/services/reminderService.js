@@ -26,7 +26,7 @@ const sendTaskReminder = async (task, fallbackPhone) => {
 };
 
 const processDueReminders = async () => {
-  if (running) return;
+  if (running) return { skipped: true, processed: 0, sent: 0, failed: 0 };
   running = true;
 
   try {
@@ -42,13 +42,20 @@ const processDueReminders = async () => {
       order: [['reminderDateTime', 'ASC']],
     });
 
+    let sent = 0;
+    let failed = 0;
+
     for (const task of tasks) {
       try {
         await sendTaskReminder(task, task.user?.phone);
+        sent += 1;
       } catch (error) {
+        failed += 1;
         console.error(`No fue posible enviar el recordatorio de la tarea ${task.id}:`, error.message);
       }
     }
+
+    return { skipped: false, processed: tasks.length, sent, failed };
   } finally {
     running = false;
   }
