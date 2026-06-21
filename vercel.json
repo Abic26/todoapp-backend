@@ -3,10 +3,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
-      "includeFiles": [
-        "node_modules/pg/**",
-        "node_modules/swagger-ui-dist/**"
-      ]
+      "includeFiles": "node_modules/pg/**"
     }
   },
   "rewrites": [
