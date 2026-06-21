@@ -2,18 +2,19 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/index.js": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "node_modules/pg/**"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api/index"
     }
   ],
   "crons": [
     {
-      "path": "/api/cron/travel-report",
+      "path": "/api/cron/reminders",
       "schedule": "2 23 * * *"
     }
   ]

@@ -1,8 +1,12 @@
 const { Sequelize } = require('sequelize');
+const pg = require('pg');
 const env = require('./env');
 
 const options = {
   dialect: 'postgres',
+  // Sequelize carga el driver dinámicamente. Declararlo explícitamente permite
+  // que el empaquetador serverless de Vercel incluya `pg` y sus dependencias.
+  dialectModule: pg,
   logging: env.nodeEnv === 'development' ? console.log : false,
   dialectOptions: env.database.ssl
     ? { ssl: { require: true, rejectUnauthorized: false } }

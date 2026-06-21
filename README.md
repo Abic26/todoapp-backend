@@ -290,9 +290,10 @@ El proyecto incluye `vercel.json` y el adaptador serverless `api/index.js`.
 3. Añade también las variables de Twilio si usarás WhatsApp.
 4. Despliega sin configurar un Build Command personalizado.
 
-Todas las rutas se redirigen a la función Express. El cron de Vercel llama cada cinco
-minutos a `GET /api/cron/reminders` y se autentica automáticamente mediante
-`CRON_SECRET`. La frecuencia disponible puede depender del plan de Vercel.
+Todas las rutas se redirigen a la función Express. El cron de Vercel llama diariamente
+a `GET /api/cron/reminders` y se autentica automáticamente mediante `CRON_SECRET`.
+El plan Hobby solo permite una ejecución diaria; para recordatorios frecuentes necesitas
+Vercel Pro o un scheduler externo.
 
 No subas `.env`: Vercel debe recibir las variables desde su panel. Antes del primer
 despliegue de producción, crea las tablas mediante migraciones o ejecuta temporalmente
