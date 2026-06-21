@@ -1,5 +1,15 @@
 const env = require('./env');
 
+const normalizeBaseUrl = (url) => {
+  if (!url) return '';
+  const withProtocol = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+  return withProtocol.replace(/\/+$/, '');
+};
+
+const productionUrl = normalizeBaseUrl(
+  env.apiBaseUrl || 'https://todoapp-backend-delta.vercel.app',
+);
+
 const taskProperties = {
   id: { type: 'string', format: 'uuid' },
   userId: { type: 'string', format: 'uuid' },
@@ -67,6 +77,10 @@ const swaggerDocument = {
       'API REST para autenticación, gestión de tareas y recordatorios por WhatsApp.',
   },
   servers: [
+    {
+      url: productionUrl,
+      description: 'Producción',
+    },
     {
       url: `http://localhost:${env.port}`,
       description: 'Entorno local',

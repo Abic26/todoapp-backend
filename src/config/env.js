@@ -88,6 +88,10 @@ const validateEnvironment = () => {
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT) || 3000,
+  apiBaseUrl:
+    cleanValue(process.env.API_BASE_URL)
+    || cleanValue(process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    || '',
   database,
   jwt: {
     secret: process.env.JWT_SECRET || 'development-only-secret-change-me',

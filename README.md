@@ -283,6 +283,7 @@ El proyecto incluye `vercel.json` y el adaptador serverless `api/index.js`.
 
    ```text
    NODE_ENV=production
+   API_BASE_URL=https://todoapp-backend-delta.vercel.app
    DATABASE_URL=<connection string pooler de Neon>
    DB_SSL=true
    DB_SYNC=false
