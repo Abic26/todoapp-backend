@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const swaggerUi = require('swagger-ui-express');
 const env = require('./config/env');
 const swaggerDocument = require('./config/swagger');
 const authRoutes = require('./routes/authRoutes');
@@ -26,21 +25,39 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/api-docs.json', (req, res) => res.json(swaggerDocument));
-const swaggerSetup = swaggerUi.setup(swaggerDocument, {
-  customSiteTitle: 'TODoApp API Docs',
-  swaggerOptions: { persistAuthorization: true },
+app.get(['/api-docs', '/api-docs/'], (req, res) => {
+  res.type('html').send(`<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TODoApp API Docs</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css"
+    />
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-standalone-preset.js"
+    ></script>
+    <script>
+      window.onload = () => {
+        window.ui = SwaggerUIBundle({
+          url: '/api-docs.json',
+          dom_id: '#swagger-ui',
+          deepLinking: true,
+          persistAuthorization: true,
+          presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+          layout: 'StandaloneLayout'
+        });
+      };
+    </script>
+  </body>
+</html>`);
 });
-
-app.use(
-  '/api-docs',
-  swaggerUi.serve,
-  (req, res, next) => {
-    if (req.path === '/' || req.path === '/swagger-ui-init.js') {
-      return swaggerSetup(req, res, next);
-    }
-    return next();
-  },
-);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
