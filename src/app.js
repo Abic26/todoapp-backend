@@ -26,13 +26,20 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/api-docs.json', (req, res) => res.json(swaggerDocument));
+const swaggerSetup = swaggerUi.setup(swaggerDocument, {
+  customSiteTitle: 'TODoApp API Docs',
+  swaggerOptions: { persistAuthorization: true },
+});
+
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, {
-    customSiteTitle: 'TODoApp API Docs',
-    swaggerOptions: { persistAuthorization: true },
-  }),
+  (req, res, next) => {
+    if (req.path === '/' || req.path === '/swagger-ui-init.js') {
+      return swaggerSetup(req, res, next);
+    }
+    return next();
+  },
 );
 
 app.use('/api/auth', authRoutes);

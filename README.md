@@ -72,6 +72,9 @@ La especificación OpenAPI en JSON está disponible en:
 http://localhost:3000/api-docs.json
 ```
 
+En Vercel, `vercel.json` incluye explícitamente los archivos estáticos de
+`swagger-ui-dist` para que los bundles JavaScript no sean omitidos al empaquetar la función.
+
 Para probar rutas protegidas, inicia sesión, copia el token y pulsa **Authorize** en
 Swagger usando el token JWT.
 
